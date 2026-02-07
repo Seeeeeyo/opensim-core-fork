@@ -244,6 +244,17 @@ OpenSim::ModelComponentSet<OpenSim::Controller>;
 %template(SharedOrientationsReference) std::shared_ptr<OpenSim::OrientationsReference>;
 %include <OpenSim/Simulation/BufferedOrientationsReference.h>
 %shared_ptr(OpenSim::BufferedOrientationsReference);
+%include <OpenSim/Simulation/BufferedMarkersReference.h>
+%shared_ptr(OpenSim::BufferedMarkersReference);
+
+%inline %{
+OpenSim::BufferedMarkersReference* make_buffered_markers_reference(
+    const OpenSim::TimeSeriesTableVec3& table,
+    const OpenSim::Set<OpenSim::MarkerWeight>& weights)
+{
+    return new OpenSim::BufferedMarkersReference(table, weights);
+};
+%}
 
 %include <OpenSim/Simulation/AssemblySolver.h>
 %include <OpenSim/Simulation/InverseKinematicsSolver.h>
@@ -416,4 +427,6 @@ EXPOSE_SET_CONSTRUCTORS_HELPER(ProbeSet);
 EXPOSE_SET_CONSTRUCTORS_HELPER(MarkerSet);
 EXPOSE_SET_CONSTRUCTORS_HELPER(WrapObjectSet);
 EXPOSE_SET_CONSTRUCTORS_HELPER(CoordinateSet);
+
+
 
