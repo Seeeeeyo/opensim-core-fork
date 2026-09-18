@@ -256,11 +256,30 @@ OpenSim::ModelComponentSet<OpenSim::Controller>;
 //
 %template (SetOientationWeights) OpenSim::Set<OrientationWeight, OpenSim::Object>;
 %template(SharedOrientationsReference) std::shared_ptr<OpenSim::OrientationsReference>;
+// BufferedOrientationsReference must remain a regular SWIG proxy. It is
+// passed to InverseKinematicsSolver as an OrientationsReference&, whose class
+// hierarchy is not smart-pointer aware. Marking only this derived class with
+// %shared_ptr breaks that conversion in Python (and generates an invalid
+// swigSetCMemOwn() call in Java).
 %include <OpenSim/Simulation/BufferedOrientationsReference.h>
 %shared_ptr(OpenSim::BufferedOrientationsReference);
 
+// In contrast, BufferedInverseKinematicsSolver accepts a
+// shared_ptr<BufferedMarkersReference>. Python therefore needs %shared_ptr
+// before %include so a BufferedMarkersReference proxy can be converted to the
+// constructor argument. Java cannot use that ordering until the Object class
+// hierarchy is smart-pointer aware.
+#ifdef SWIGJAVA
+%include <OpenSim/Simulation/BufferedMarkersReference.h>
+%shared_ptr(OpenSim::BufferedMarkersReference);
+#else
+%shared_ptr(OpenSim::BufferedMarkersReference);
+%include <OpenSim/Simulation/BufferedMarkersReference.h>
+#endif
+
 %include <OpenSim/Simulation/AssemblySolver.h>
 %include <OpenSim/Simulation/InverseKinematicsSolver.h>
+%include <OpenSim/Simulation/BufferedInverseKinematicsSolver.h>
 %include <OpenSim/Simulation/OpenSense/IMUPlacer.h>
 %include <OpenSim/Simulation/OpenSense/IMU.h>
 
@@ -424,4 +443,3 @@ EXPOSE_SET_CONSTRUCTORS_HELPER(ProbeSet);
 EXPOSE_SET_CONSTRUCTORS_HELPER(MarkerSet);
 EXPOSE_SET_CONSTRUCTORS_HELPER(WrapObjectSet);
 EXPOSE_SET_CONSTRUCTORS_HELPER(CoordinateSet);
-
