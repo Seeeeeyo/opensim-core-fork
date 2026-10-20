@@ -24,7 +24,8 @@
 #include <OpenSim/Simulation/Model/AnalysisSet.h>
 #include <OpenSim/Tools/CMCTool.h>
 #include <OpenSim/Tools/ForwardTool.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
 
@@ -56,6 +57,5 @@ TEST_CASE("testCMCArm26_Millard") {
     rms_tols[12] = 0.02;   // BICshort/activation
     rms_tols[14] = 0.005;  // BRA/activation
 
-    CHECK_STORAGE_AGAINST_STANDARD(results, *standard, rms_tols, __FILE__, __LINE__,
-        base+" failed");
+    CHECK_STORAGE_AGAINST_STANDARD(results, *standard, rms_tols);
 }

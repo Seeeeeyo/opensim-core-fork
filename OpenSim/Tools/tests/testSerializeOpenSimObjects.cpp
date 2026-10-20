@@ -21,7 +21,6 @@
  * limitations under the License.                                             *
  * -------------------------------------------------------------------------- */
 
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
 #include <OpenSim/Common/osimCommon.h>
 #include <OpenSim/Simulation/osimSimulation.h>
 #include <OpenSim/Actuators/osimActuators.h>
@@ -29,9 +28,11 @@
 #include <OpenSim/Simulation/Model/FunctionBasedPath.h>
 #include <OpenSim/Simulation/Model/StationDefinedFrame.h>
 #include <OpenSim/Simulation/Model/ExponentialContactForce.h>
+#include <OpenSim/Tools/InverseKinematicsTool.h>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
-#include <OpenSim/Tools/InverseKinematicsTool.h>
 
 using namespace OpenSim;
 using namespace std;
@@ -65,7 +66,7 @@ TEST_CASE("Serialize OpenSim objects") {
             // property value.
             path->setCoordinatePaths({"/jointset/slider/position"});
             LinearFunction f = LinearFunction(1.0, 0.0);
-            randomize(&f);
+            OpenSim::Testing::randomize(&f);
             path->setLengthFunction(f);
             randClone = path;
         } else if (dynamic_cast<Coordinate*>(clone)) {
@@ -80,29 +81,29 @@ TEST_CASE("Serialize OpenSim objects") {
             // randClone = coord;
             continue;
         } else if (auto* wrap = dynamic_cast<WrapTorus*>(clone)) {
-            randomize(wrap);
+            OpenSim::Testing::randomize(wrap);
             wrap->set_outer_radius(0.05);
             wrap->set_inner_radius(0.01);
             wrap->set_quadrant("+x");
             randClone = wrap;
         } else if (auto* wrap = dynamic_cast<WrapObject*>(clone)) {
-            randomize(wrap);
+            OpenSim::Testing::randomize(wrap);
             wrap->set_quadrant("+x");
             randClone = wrap;
         } else if (auto* extforce = dynamic_cast<ExternalForce*>(clone)) {
-            randomize(extforce);
+            OpenSim::Testing::randomize(extforce);
             extforce->set_force_identifier("force");
             extforce->set_torque_identifier("torque");
             randClone = extforce;
         } else if (auto* muscle = dynamic_cast<Thelen2003Muscle*>(clone)) {
-            randomize(muscle);
+            OpenSim::Testing::randomize(muscle);
             muscle->set_Flen(1.4);
             muscle->set_fv_linear_extrap_threshold(0.95);
             muscle->set_minimum_activation(0.01);
             muscle->set_min_control(0.01);
             randClone = muscle;
         } else if (auto* muscle = dynamic_cast<Millard2012EquilibriumMuscle*>(clone)) {
-            randomize(muscle);
+            OpenSim::Testing::randomize(muscle);
             muscle->set_ActiveForceLengthCurve(ActiveForceLengthCurve());
             muscle->set_ForceVelocityCurve(ForceVelocityCurve());
             muscle->set_FiberForceLengthCurve(FiberForceLengthCurve());
@@ -110,7 +111,7 @@ TEST_CASE("Serialize OpenSim objects") {
             muscle->set_min_control(0.01);
             randClone = muscle;
         } else if (auto* muscle = dynamic_cast<Millard2012AccelerationMuscle*>(clone)) {
-            randomize(muscle);
+            OpenSim::Testing::randomize(muscle);
             muscle->set_ActiveForceLengthCurve(ActiveForceLengthCurve());
             muscle->set_ForceVelocityCurve(ForceVelocityCurve());
             muscle->set_FiberForceLengthCurve(FiberForceLengthCurve());
@@ -139,7 +140,7 @@ TEST_CASE("Serialize OpenSim objects") {
             // with exception message "failed to match original model".
             continue;
         } else {
-            randClone = randomize(clone);
+            randClone = OpenSim::Testing::randomize(clone);
         }
         try {
             ModelComponent* comp = ModelComponent::safeDownCast(randClone);
@@ -163,21 +164,18 @@ TEST_CASE("Serialize OpenSim objects") {
     nc = deserializedModel.getMiscModelComponentSet().getSize();
     cout << nc << " model components were deserialized from file." << endl;
 
-    ASSERT(testModel == deserializedModel,
-        "deserializedModel FAILED to match original model.");
+    OPENSIM_ASSERT_ALWAYS(testModel == deserializedModel);
 
     //Might as well test cloning and assignment
     Model* cloneModel = testModel.clone();
 
-    ASSERT(testModel == *cloneModel,
-        "cloneModel FAILED to match original model.");
+    OPENSIM_ASSERT_ALWAYS(testModel == *cloneModel);
 
     Model assignedModel = *cloneModel;
 
     delete cloneModel;
 
-    ASSERT(testModel == assignedModel,
-        "assignedModel FAILED to match original model.");
+    OPENSIM_ASSERT_ALWAYS(testModel == assignedModel);
 }
 
 TEST_CASE("Test unrecognized types") {

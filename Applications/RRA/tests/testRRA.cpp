@@ -24,7 +24,8 @@
 #include <OpenSim/Simulation/Model/BodySet.h>
 #include <OpenSim/Simulation/Model/AnalysisSet.h>
 #include <OpenSim/Tools/RRATool.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
 
@@ -47,7 +48,7 @@ TEST_CASE("testRRA") {
     CAPTURE(body, com, standardCOM, tolerances);
 
     for (int i = 0; i < 3; ++i)
-        ASSERT_EQUAL(standardCOM[i], com[i], tolerances[i]);
+        OpenSim_CHECK_EQUAL(standardCOM[i], com[i], tolerances[i]);
 
     auto loadsList = adjusted_model.getComponentList<ExternalLoads>();
     OPENSIM_THROW_IF(loadsList.begin() != loadsList.end(), Exception,
@@ -60,6 +61,5 @@ TEST_CASE("testRRA") {
     Storage result("ResultsRRA/subject01_walk1_RRA_Kinematics_q.sto"),
             standard("subject01_walk1_RRA_Kinematics_q_standard.sto");
     CHECK_STORAGE_AGAINST_STANDARD(result, standard,
-        std::vector<double>(24, 0.5),
-        __FILE__, __LINE__, "testRRA: kinematics comparison failed");
+        std::vector<double>(24, 0.5));
 }

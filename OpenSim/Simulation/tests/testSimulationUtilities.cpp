@@ -21,12 +21,13 @@
  * limitations under the License.                                             *
  * -------------------------------------------------------------------------- */
 
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
 #include <OpenSim/Simulation/Model/Model.h>
 #include <OpenSim/Simulation/SimbodyEngine/PinJoint.h>
 #include <OpenSim/Simulation/SimbodyEngine/FreeJoint.h>
 #include <OpenSim/Simulation/SimulationUtilities.h>
 #include <OpenSim/Actuators/PointActuator.h>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
 
@@ -107,9 +108,7 @@ TEST_CASE("testUpdatePre40KinematicsFor40MotionType") {
 
         const int numColumns = origKinematics.getColumnLabels().getSize();
         CHECK_STORAGE_AGAINST_STANDARD(*updatedKinematics, origKinematics,
-                std::vector<double>(numColumns, 1e-14),
-                __FILE__, __LINE__,
-                "updatePre40KinematicsStorageFor40MotionType() altered columms incorrectly.");
+                std::vector<double>(numColumns, 1e-14));
     }
 
     // Test updatePre40KinematicsFilesFor40MotionType().
@@ -130,9 +129,7 @@ TEST_CASE("testUpdatePre40KinematicsFor40MotionType") {
         const int numColumns = origKinematics.getColumnLabels().getSize();
         // We lose precision when through the file.
         CHECK_STORAGE_AGAINST_STANDARD(updatedKinematics, origKinematics,
-                std::vector<double>(numColumns, 1e-6),
-                __FILE__, __LINE__,
-                "updatePre40KinematicsFilesFor40MotionType() altered columms incorrectly.");
+                std::vector<double>(numColumns, 1e-6));
     }
 
     {
@@ -150,10 +147,7 @@ TEST_CASE("testUpdatePre40KinematicsFor40MotionType") {
 
         const int numColumns = origKinematics.getColumnLabels().getSize();
         CHECK_STORAGE_AGAINST_STANDARD(*updatedKinematics, origKinematics,
-                std::vector<double>(numColumns, 1e-14),
-                __FILE__, __LINE__,
-                "updatePre40KinematicsStorageFor40MotionType(), with a copied "
-                "model, altered columms incorrectly.");
+                std::vector<double>(numColumns, 1e-14));
     }
     const std::string updatedModelFile =
             "testSimulationUtilities_leg6dof9musc_updated.osim";

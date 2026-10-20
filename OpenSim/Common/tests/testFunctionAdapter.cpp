@@ -22,7 +22,8 @@
 
 #include <OpenSim/Common/FunctionAdapter.h>
 #include <OpenSim/Common/PiecewiseLinearFunction.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
 
@@ -41,10 +42,12 @@ TEST_CASE("Function Adapter has Expected Behavior")
     vector<int> deriv(1, 0);
     for (int i = 0; i < 100; ++i) {
         xvec[0] = i*0.01;
-        ASSERT_EQUAL(f1.calcValue(xvec), adapter.calcValue(xvec), 1e-10, __FILE__, __LINE__);
-        ASSERT_EQUAL(f1.calcDerivative(deriv,xvec), adapter.calcDerivative(deriv,xvec), 1e-10, __FILE__, __LINE__);
-        ASSERT_EQUAL(f1.calcValue(xvec), f2.calcValue(xvec),  1e-10, __FILE__, __LINE__);
-        ASSERT_EQUAL(f1.calcDerivative(deriv,xvec), f2.calcDerivative(deriv,xvec), 1e-10, __FILE__, __LINE__);
+        OpenSim_CHECK_EQUAL(f1.calcValue(xvec), adapter.calcValue(xvec), 1e-10);
+        OpenSim_CHECK_EQUAL(f1.calcDerivative(deriv,xvec),
+            adapter.calcDerivative(deriv,xvec), 1e-10);
+        OpenSim_CHECK_EQUAL(f1.calcValue(xvec), f2.calcValue(xvec),  1e-10);
+        OpenSim_CHECK_EQUAL(f1.calcDerivative(deriv,xvec),
+            f2.calcDerivative(deriv,xvec), 1e-10);
     }
-    ASSERT(adapter.getArgumentSize() == 1, __FILE__, __LINE__);
+    OPENSIM_ASSERT_ALWAYS(adapter.getArgumentSize() == 1);
 }
