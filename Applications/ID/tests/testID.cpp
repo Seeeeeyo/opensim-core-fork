@@ -21,20 +21,22 @@
  * limitations under the License.                                             *
  * -------------------------------------------------------------------------- */
 
-#include <string>
-#include <iostream>
 #include <OpenSim/version.h>
 #include <OpenSim/Common/IO.h>
 #include <OpenSim/Simulation/Model/Model.h>
 #include <OpenSim/Simulation/Model/ForceSet.h>
 #include <OpenSim/Tools/InverseDynamicsTool.h>
 #include <OpenSim/Simulation/InverseDynamicsSolver.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
 #include <OpenSim/Simulation/SimbodyEngine/BallJoint.h>
 #include <OpenSim/Simulation/SimulationUtilities.h>
 #include <OpenSim/Common/GCVSplineSet.h>
 
+#include <tests/Testing.h>
+
 #include <catch2/catch_all.hpp>
+
+#include <string>
+#include <iostream>
 
 using namespace OpenSim;
 using namespace std;
@@ -45,8 +47,7 @@ TEST_CASE("testArm26") {
     Storage result1("Results/arm26_InverseDynamics.sto");
     Storage standard1("std_arm26_InverseDynamics.sto");
     CHECK_STORAGE_AGAINST_STANDARD( result1, standard1,
-        std::vector<double>(23, 1e-2), __FILE__, __LINE__,
-        "testArm failed");
+        std::vector<double>(23, 1e-2));
 
     // setOutputGenForceFileName including folder name, test
     // that folder will be ignored and file is written to Results
@@ -56,8 +57,7 @@ TEST_CASE("testArm26") {
     id12.run();
     Storage result12("Results/arm26_InverseDynamics_rerun.sto");
     CHECK_STORAGE_AGAINST_STANDARD(result1, result12,
-            std::vector<double>(23, 1e-5), __FILE__, __LINE__,
-            "testArm ignore path in output file spec. failed");
+            std::vector<double>(23, 1e-5));
 }
 
 TEST_CASE("testGait") {
@@ -66,8 +66,7 @@ TEST_CASE("testGait") {
     Storage result2("Results/subject01_InverseDynamics.sto");
     Storage standard2("std_subject01_InverseDynamics.sto");
     CHECK_STORAGE_AGAINST_STANDARD(result2, standard2,
-        std::vector<double>(23, 2.0), __FILE__, __LINE__,
-        "testGait failed");
+        std::vector<double>(23, 2.0));
 }
 
 TEST_CASE("testThoracoscapularShoulderModel") {
@@ -119,8 +118,7 @@ TEST_CASE("testThoracoscapularShoulderModel") {
     }
 
     // Compare results
-    ASSERT_EQUAL(idSolverVec, idToolVec, 1e-6, __FILE__, __LINE__,
-        "testThoracoscapularShoulderModel failed");
+    OpenSim_CHECK_EQUAL(idSolverVec, idToolVec, 1e-6);
 }
 
 // Commented out testBallJoint due to sporadic crash in Model destructor

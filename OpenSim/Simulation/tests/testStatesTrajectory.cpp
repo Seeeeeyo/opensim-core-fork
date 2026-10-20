@@ -24,11 +24,13 @@
 #include <OpenSim/Simulation/osimSimulation.h>
 #include <OpenSim/Common/Constant.h>
 #include <OpenSim/Actuators/PointActuator.h>
-#include <random>
-#include <cstdio>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
+
+#include <random>
+#include <cstdio>
 
 using namespace OpenSim;
 using namespace SimTK;
@@ -236,7 +238,7 @@ void testPopulateTrajectoryAndStatesTrajectoryReporter() {
         std::vector<double> times { 0, 0.01, 0.02, 0.03, 0.04, 0.05 };
         int i = 0;
         for (const auto& s : statesColInterval->getStates()) {
-            ASSERT_EQUAL(s.getTime(), times[i], 1e-5);
+            OpenSim_CHECK_EQUAL(s.getTime(), times[i], 1e-5);
             ++i;
         }
     }

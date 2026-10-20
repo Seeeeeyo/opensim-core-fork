@@ -24,7 +24,8 @@
 #include <OpenSim/Simulation/Model/AnalysisSet.h>
 #include <OpenSim/Tools/CMCTool.h>
 #include <OpenSim/Tools/ForwardTool.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
 
@@ -49,6 +50,5 @@ TEST_CASE("testCMCEMGDrivenArm_Millard") {
     rms_tols[10] = 0.50;  // biceps long normally low but because of EMG tracking should be on more
     rms_tols[12] = 0.50;  // biceps short normally on but because of EMG tracking should be lower
 
-    CHECK_STORAGE_AGAINST_STANDARD(results, standard, rms_tols,
-        __FILE__, __LINE__, "testCMCEMGDrivenArm_Millard failed");
+    CHECK_STORAGE_AGAINST_STANDARD(results, standard, rms_tols);
 }

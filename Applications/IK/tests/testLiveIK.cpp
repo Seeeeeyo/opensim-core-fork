@@ -32,10 +32,12 @@
 #include <OpenSim/Simulation/InverseKinematicsSolver.h>
 #include <OpenSim/Tools/InverseKinematicsTool.h>
 #include <OpenSim/Tools/IKTaskSet.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
-#include <thread>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
+
+#include <thread>
 
 using namespace OpenSim;
 using namespace std;
@@ -123,8 +125,9 @@ namespace {
 
     void compareMotionTables(const TimeSeriesTable& report,
                 const TimeSeriesTable& standard) {
-        ASSERT(report.getNumRows() == standard.getNumRows());
-        ASSERT(report.getNumColumns() == standard.getNumColumns());
+        OPENSIM_ASSERT_ALWAYS(report.getNumRows() == standard.getNumRows());
+        OPENSIM_ASSERT_ALWAYS(
+                report.getNumColumns() == standard.getNumColumns());
 
         auto reportLabels = report.getColumnLabels();
         auto stdLabels = standard.getColumnLabels();

@@ -37,7 +37,8 @@
 #include <OpenSim/Common/RootSolver.h>
 #include <OpenSim/Common/VectorFunctionUncoupledNxN.h>
 
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+#include <tests/Testing.h>
+
 #include <catch2/catch_all.hpp>
 
 #include <cmath>
@@ -149,6 +150,6 @@ TEST_CASE("APDM Data Reader")
     cout<<"roots:\n";
     cout<<roots<<endl<<endl;
     for (int i=0; i <= 100; i++){
-        //ASSERT_EQUAL(i*0.01, roots[i], 1e-6);
+        //OpenSim_CHECK_EQUAL(i*0.01, roots[i], 1e-6);
     }
 }

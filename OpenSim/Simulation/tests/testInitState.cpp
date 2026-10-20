@@ -20,13 +20,16 @@
  * See the License for the specific language governing permissions and        *
  * limitations under the License.                                             *
  * -------------------------------------------------------------------------- */
-#include <stdint.h>
 #include <OpenSim/Simulation/Manager/Manager.h>
 #include <OpenSim/Simulation/Control/ControlSetController.h>
 #include <OpenSim/Simulation/Model/Model.h>
 #include <OpenSim/Actuators/PointActuator.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+
+#include <tests/Testing.h>
+
 #include <catch2/catch_all.hpp>
+
+#include <stdint.h>
 
 using namespace OpenSim;
 using namespace std;
@@ -107,15 +110,11 @@ TEST_CASE("testStates")
     
     //y4.dump("y4: Default State after second simulation:");
 
-    for (int i = 0; i < y1.size(); i++) 
+    for (int i = 0; i < y1.size(); i++)
     {
-        cout << i <<" : y1[i] = " << y1[i] << " :: y3[i] = " << y3[i] << endl;
-        ASSERT_EQUAL(y1[i], y3[i], 1e-5,__FILE__, __LINE__, 
-            "Model failed to maintain default state after simulation.");
-        cout << i <<" : y2[i] = " << y2[i] << " :: y4[i] = " << y4[i] << endl;
-        ASSERT_EQUAL(y2[i], y4[i], 1e-5,__FILE__, __LINE__, 
-            "Model failed to properly update default state after simulation.");
+        OpenSim_CHECK_EQUAL(y1[i], y3[i], 1e-5);
+        OpenSim_CHECK_EQUAL(y2[i], y4[i], 1e-5);
     }
-    ASSERT(max(abs(y1-y2)) > 1e-4);
+    OPENSIM_ASSERT_ALWAYS(max(abs(y1-y2)) > 1e-4);
 }
 

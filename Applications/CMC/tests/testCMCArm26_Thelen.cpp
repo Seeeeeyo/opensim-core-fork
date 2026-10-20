@@ -24,7 +24,8 @@
 #include <OpenSim/Simulation/Model/AnalysisSet.h>
 #include <OpenSim/Tools/CMCTool.h>
 #include <OpenSim/Tools/ForwardTool.h>
-#include <OpenSim/Auxiliary/auxiliaryTestFunctions.h>
+
+#include <tests/Testing.h>
 
 #include <catch2/catch_all.hpp>
 
@@ -44,6 +45,5 @@ TEST_CASE("testCMCArm26_Thelen") {
     const string& muscleType = cmc.getModel().getMuscles()[0].getConcreteClassName();
     string base = "testCMCArm26 "+ muscleType;
 
-    CHECK_STORAGE_AGAINST_STANDARD(results, *standard, rms_tols, __FILE__, __LINE__,
-        base+" failed");
+    CHECK_STORAGE_AGAINST_STANDARD(results, *standard, rms_tols);
 }
